@@ -42,6 +42,7 @@ export class User {
   /** Wire up a glasses connection — sets up all event listeners */
   setAppSession(session: AppSession): void {
     this.appSession = session;
+    this.photo.setup();
     this.transcription.setup(session);
     this.input.setup(session);
     console.log(`📸 Camera ready for ${this.userId}`);
@@ -50,6 +51,7 @@ export class User {
   /** Disconnect glasses but keep user alive (photos, SSE clients stay) */
   clearAppSession(): void {
     this.transcription.destroy();
+    this.photo.stopContinuousUpload();
     this.appSession = null;
   }
 

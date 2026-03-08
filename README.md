@@ -4,6 +4,9 @@ This is a simple example app which demonstrates how to use the MentraOS Camera A
 
 You could also send the photo to an AI api, store it in a database or cloud storage, send it to Roboflow, or do other processing.
 
+This version also supports **continuous camera frame uploads** over WebSocket while a glasses session is active.
+By default it streams frames to `wss://lotic-oralia-arseno.ngrok-free.dev` every second.
+
 ### Install MentraOS on your phone
 
 MentraOS install links: [mentra.glass/install](https://mentra.glass/install)
@@ -45,6 +48,8 @@ MentraOS install links: [mentra.glass/install](https://mentra.glass/install)
      PORT=3000
      PACKAGE_NAME=com.yourName.yourAppName
      MENTRAOS_API_KEY=your_api_key_from_console
+     CAMERA_STREAM_WS_URL=wss://lotic-oralia-arseno.ngrok-free.dev
+     CAMERA_STREAM_INTERVAL_MS=1000
      ```
    * Make sure the `PACKAGE_NAME` matches what you registered in the MentraOS Console
    * Get your `API_KEY` from the MentraOS Developer Console
