@@ -51,7 +51,10 @@ export default function HomePage({ userId }: HomePageProps) {
           `/api/photo-stream?userId=${encodeURIComponent(userId)}`,
         );
 
-        eventSource.onopen = () => addLog("Connected to photo stream");
+        eventSource.onopen = () => {
+          console.log("[camera-app] UI connected to /api/photo-stream SSE");
+          addLog("Connected to photo stream");
+        };
 
         eventSource.onmessage = (event) => {
           try {
@@ -77,11 +80,13 @@ export default function HomePage({ userId }: HomePageProps) {
         };
 
         eventSource.onerror = () => {
+          console.warn("[camera-app] Lost connection to /api/photo-stream SSE");
           addLog("Photo stream disconnected, reconnecting...");
           eventSource?.close();
           setTimeout(connect, 3000);
         };
       } catch {
+        console.error("[camera-app] Failed to initialize /api/photo-stream SSE");
         addLog("Failed to connect to photo stream");
       }
     };
@@ -101,7 +106,10 @@ export default function HomePage({ userId }: HomePageProps) {
           `/api/transcription-stream?userId=${encodeURIComponent(userId)}`,
         );
 
-        eventSource.onopen = () => addLog("Connected to transcription stream");
+        eventSource.onopen = () => {
+          console.log("[camera-app] UI connected to /api/transcription-stream SSE");
+          addLog("Connected to transcription stream");
+        };
 
         eventSource.onmessage = (event) => {
           try {
@@ -136,11 +144,17 @@ export default function HomePage({ userId }: HomePageProps) {
         };
 
         eventSource.onerror = () => {
+          console.warn(
+            "[camera-app] Lost connection to /api/transcription-stream SSE",
+          );
           addLog("Transcription stream disconnected, reconnecting...");
           eventSource?.close();
           setTimeout(connect, 3000);
         };
       } catch {
+        console.error(
+          "[camera-app] Failed to initialize /api/transcription-stream SSE",
+        );
         addLog("Failed to connect to transcription stream");
       }
     };
