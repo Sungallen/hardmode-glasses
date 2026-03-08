@@ -59,7 +59,21 @@ export default function HomePage({ userId }: HomePageProps) {
         eventSource.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
-            if (data.type === "connected") return;
+            if (data.type === "connected") {
+              const statusMessage = data.uploaderWebsocketConnected
+                ? `Backend websocket uploader is connected (${data.uploaderWebsocketReadyState})`
+                : `Backend websocket uploader is not connected yet (${data.uploaderWebsocketReadyState})`;
+              console.log(
+                "[camera-app] /api/photo-stream connected; backend uploader status:",
+                {
+                  connected: data.uploaderWebsocketConnected,
+                  readyState: data.uploaderWebsocketReadyState,
+                  websocketUrl: data.uploaderWebsocketUrl,
+                },
+              );
+              addLog(statusMessage);
+              return;
+            }
 
             setPhotos((prev) => {
               if (prev.some((p) => p.requestId === data.requestId)) return prev;

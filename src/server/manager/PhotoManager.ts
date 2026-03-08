@@ -149,6 +149,31 @@ export class PhotoManager {
     });
   }
 
+
+  isUploaderConnected(): boolean {
+    return this.uploaderSocket?.readyState === WebSocket.OPEN;
+  }
+
+  getUploaderReadyStateLabel(): string {
+    if (!this.uploaderSocket) return "CLOSED";
+
+    switch (this.uploaderSocket.readyState) {
+      case WebSocket.CONNECTING:
+        return "CONNECTING";
+      case WebSocket.OPEN:
+        return "OPEN";
+      case WebSocket.CLOSING:
+        return "CLOSING";
+      case WebSocket.CLOSED:
+      default:
+        return "CLOSED";
+    }
+  }
+
+  getUploaderWebsocketUrl(): string {
+    return this.streamWebsocketUrl;
+  }
+
   /** Push a photo to all connected SSE clients */
   broadcastPhoto(photo: StoredPhoto): void {
     const base64Data = photo.buffer.toString("base64");
