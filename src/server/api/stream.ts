@@ -22,7 +22,13 @@ export function photoStream(c: Context) {
     user.photo.addSSEClient(client);
 
     await stream.writeSSE({
-      data: JSON.stringify({ type: "connected", userId }),
+      data: JSON.stringify({
+        type: "connected",
+        userId,
+        uploaderWebsocketConnected: user.photo.isUploaderConnected(),
+        uploaderWebsocketReadyState: user.photo.getUploaderReadyStateLabel(),
+        uploaderWebsocketUrl: user.photo.getUploaderWebsocketUrl(),
+      }),
     });
 
     // Send existing photos
